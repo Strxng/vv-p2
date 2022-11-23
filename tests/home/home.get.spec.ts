@@ -11,16 +11,19 @@ describe('Integration tests for home(/) api endpoint using get method', () => {
 
   it('should returns an object with clients when is called', async () => {
     const { body } = await supertest(domain).get('/')
-    
     const keys = Object.keys(body)
-    // keys.forEach((key) => {
-    //   const client = body[key]
 
-    //   expect(client).toBe(1)
-    // })
-
-    const client = body[keys[0]]
-
-    expect(client).toBe(1)
+    let client = {}
+    if(keys.length > 0) client = body[keys[0]]
+    
+    if(keys.length > 0){
+      const clientProps = Object.keys(client)
+      expect(clientProps).contains('id')
+      expect(clientProps).contains('nome')
+      expect(clientProps).contains('idade')
+      expect(clientProps).contains('risco')
+    } else {
+      expect(client).toEqual({})
+    }
   })
 })
