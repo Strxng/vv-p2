@@ -10,7 +10,7 @@ describe('Integration tests for client(/client/{id}) api endpoint using get meth
   })
 
   it('should returns an object with one client when is called', async () => {
-    const id = 1;
+    const id = 11111;
 
     await supertest(domain).post('/cliente').send({
       id,
