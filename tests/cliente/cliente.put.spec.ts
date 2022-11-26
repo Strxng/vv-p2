@@ -30,12 +30,15 @@ describe('Integration tests for cliente api endpoint using put method', () => {
   })
 
   it('should returns status 201 when is called with a correct body', async () => {
-    const { status } = await supertest(domain).put('/cliente').send({
-      id: 1,
+    const client = {
+      id: 9999,
       nome: 'Leonardo Bazan',
       idade: 21,
       risco: 1
-    })
+    }
+
+    await supertest(domain).post('/cliente').send(client)
+    const { status } = await supertest(domain).put('/cliente/').send({...client, nome: 'Leo Bazan'})
 
     expect(status).toBe(200)
   })
@@ -48,9 +51,10 @@ describe('Integration tests for cliente api endpoint using put method', () => {
       risco: 1
     }
 
-    const { body } = await supertest(domain).put('/cliente').send(client)
+    await supertest(domain).post('/cliente').send(client)
+    const { body } = await supertest(domain).put('/cliente').send({...client, nome: 'Leo Bazan'})
 
     const insertedClient = body[client.id]
-    expect(insertedClient).toEqual(client)
+    expect(insertedClient).toEqual({...client, nome: 'Leo Bazan'})
   })
 })
